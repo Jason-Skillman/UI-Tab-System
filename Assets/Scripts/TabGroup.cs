@@ -54,7 +54,19 @@ public class TabGroup : MonoBehaviour {
     /// </summary>
     /// <param name="button"></param>
     public void OnTabSelected(TabButton button) {
+        //Dont reselect the selected button
+        if(button == selectedTab) return;
+
+        //Callback for the old selected TabButton
+        if(selectedTab != null) {
+            selectedTab.Deselect();
+        }
+
+        //Set the new selected TabButton
         selectedTab = button;
+
+        //Callback for the new selected TabButton
+        selectedTab.Select();
 
         ResetTabs();
         button.SetBackground(spriteSelected);
