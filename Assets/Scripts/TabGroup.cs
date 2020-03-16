@@ -5,13 +5,14 @@ using UnityEngine.UI;
 
 public class TabGroup : MonoBehaviour {
 
-    public List<TabButton> tabButtons;
+    public List<GameObject> pages;
 
-    [Header("Sprites")]
+    [Header("Hover Sprites")]
     public Sprite spriteIdle;
     public Sprite spriteHover;
     public Sprite spriteSelected;
 
+    private List<TabButton> tabButtons;
     private TabButton selectedTab;
 
 
@@ -27,6 +28,10 @@ public class TabGroup : MonoBehaviour {
         tabButtons.Add(button);
     }
 
+    /// <summary>
+    /// Event for when a TabButton has triggered a hover enter event
+    /// </summary>
+    /// <param name="button"></param>
     public void OnTabEnter(TabButton button) {
         ResetTabs();
 
@@ -36,14 +41,32 @@ public class TabGroup : MonoBehaviour {
         button.SetBackground(spriteHover);
     }
 
+    /// <summary>
+    /// Event for when a TabButton has triggered a hover exit event
+    /// </summary>
+    /// <param name="button"></param>
     public void OnTabExit(TabButton button) {
         ResetTabs();
     }
 
+    /// <summary>
+    /// Event for when a TabButton has been selected
+    /// </summary>
+    /// <param name="button"></param>
     public void OnTabSelected(TabButton button) {
         selectedTab = button;
+
         ResetTabs();
         button.SetBackground(spriteSelected);
+
+        //Turn on the correct page and disable the rest
+        int index = button.transform.GetSiblingIndex();
+        for(int i = 0; i < pages.Count; i++) {
+            if(i == index)
+                pages[i].SetActive(true);
+            else
+                pages[i].SetActive(false);
+        }
     }
 
     /// <summary>
